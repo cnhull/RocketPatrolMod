@@ -30,15 +30,18 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
-        this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL MOD', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL MOD AAAAA', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY, 'Use <--> to move & (F) to Fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
         this.add.text(centerX, centerY + textSpacer, 'Press <= for Easy or => for Hard', menuConfig).setOrigin(0.5);
 
         //defining keys
+        
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        // keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        // keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
 
         //this.add.text(20, 20, "Rocket Matrol Menu");

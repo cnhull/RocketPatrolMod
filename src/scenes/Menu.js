@@ -52,12 +52,16 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             //go to single player menu
             this.sound.play('sfx_select');
-            this.scene.start("singleMenu");
+            this.scene.start("playScene");
         }
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             //go to multiplayer menu
             this.sound.play('sfx_select');
-            this.scene.start("multiMenu");
+            this.scene.start("playScene");
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyUP)){
+            this.sound.play('sfx_select');
+            this.scene.start("testScene");
         }
     }
 

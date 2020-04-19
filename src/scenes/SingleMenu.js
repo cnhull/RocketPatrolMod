@@ -1,6 +1,6 @@
-class Menu extends Phaser.Scene {
+class SingleMenu extends Phaser.Scene {
     constructor() {
-        super("menuScene");
+        super("singleMenu");
     }
 
     preload(){
@@ -30,12 +30,12 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
-        this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL MOD AAAAA', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'Use <--> to move & (F) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY- textSpacer, 'Single Player', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, 'Use <==> to move & (UP) to Fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(centerX, centerY + textSpacer, 'Press <= for Single Player', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer + textSpacer, 'Press => for Multi Player', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer, 'Press <= for Easy or => for Hard', menuConfig).setOrigin(0.5);
+
         //defining keys
         
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -50,14 +50,22 @@ class Menu extends Phaser.Scene {
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
-            //go to single player menu
+            //easy breezy
+            game.settings = {
+                spaceshipSpeed: 3,
+                gameTimer: 60000
+            }
             this.sound.play('sfx_select');
-            this.scene.start("singleMenu");
+            this.scene.start("playScene");
         }
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
-            //go to multiplayer menu
+            //hard!!!!
+            game.settings = {
+                spaceshipSpeed: 4,
+                gameTimer: 45000
+            }
             this.sound.play('sfx_select');
-            this.scene.start("multiMenu");
+            this.scene.start("playScene");
         }
     }
 

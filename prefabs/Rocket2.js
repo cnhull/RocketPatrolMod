@@ -21,7 +21,7 @@ class Rocket2 extends Phaser.GameObjects.Sprite{
         }//closes "if not firing"
 
         //fire button
-        if(Phaser.Input.Keyboard.JustDown(keyF) && !this.isFiring){
+        if(Phaser.Input.Keyboard.JustDown(keyW) && !this.isFiring){
             this.isFiring = true;
             this.sfxRocket.play(); //plays sound effect
         }

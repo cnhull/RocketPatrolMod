@@ -1,4 +1,4 @@
-class Play extends Phaser.Scene{
+class PlayVersus extends Phaser.Scene{
     constructor(){
         super("playScene");
     }
@@ -26,6 +26,7 @@ class Play extends Phaser.Scene{
 
         //adds player 1 rocket
         this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
+        this.p2Rocket = new Rocket2(this, game.config.width/2, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
 
         //add spaceships 3x
         this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0, 0);
@@ -55,6 +56,7 @@ class Play extends Phaser.Scene{
 
         //SCOOOOORE
         this.p1Score = 0;
+        this.p2Score = 0;
 
         //score display
         let scoreConfig = {
@@ -70,6 +72,7 @@ class Play extends Phaser.Scene{
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(100, 54, this.p2Score, scoreConfig);
         
         //game over flag
         this.gameOver = false;

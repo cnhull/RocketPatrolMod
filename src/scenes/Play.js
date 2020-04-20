@@ -12,6 +12,7 @@ class Play extends Phaser.Scene{
         this.load.image('blue', './assets/starfieldBlue.png');
         this.load.image('star', './assets/starfieldStar.png');
         this.load.image('planets', './assets/planets.png');
+        this.load.image('frame', './assets/frame.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
@@ -38,6 +39,7 @@ class Play extends Phaser.Scene{
         this.starfieldBlue = this.add.tileSprite(0, 0, 640, 480, 'blue').setOrigin(0, 0);
         this.starfieldStar = this.add.tileSprite(0, 0, 640, 480, 'star').setOrigin(0, 0);
         this.starfieldPlanets = this.add.tileSprite(0, 0, 640, 480, 'planets').setOrigin(0, 0);
+        this.frame = this.add.tileSprite(0, 0, 640, 480, 'frame').setOrigin(0, 0);
 
         //borders!!
         this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
@@ -93,7 +95,7 @@ class Play extends Phaser.Scene{
             },
             fixedWidth: 100
         }
-
+        this.frame = this.add.tileSprite(0, 0, 640, 480, 'frame').setOrigin(0, 0);
         this.timeLeft = 0;
         this.clockDisplay = this.add.text(game.config.width/2, 54, this.timeLeft + "  ", scoreConfig);
         this.scoreLeft = this.add.text(69, 54, this.p1Score +  "  ", scoreConfig);
@@ -111,6 +113,7 @@ class Play extends Phaser.Scene{
             this.add.text(game.config.width/2, game.config.height/2 + (64*2), '(Space) to Restart or <= for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+
     }
 
     update(){

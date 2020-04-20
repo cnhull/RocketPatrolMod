@@ -7,14 +7,39 @@ class PlayCoop extends Phaser.Scene{
         //loads images and sprites
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        //this.load.image('starfield', './assets/starfield.png');
+        this.load.image('black', './assets/starfieldBlack.png');
+        this.load.image('blue', './assets/starfieldBlue.png');
+        this.load.image('star', './assets/starfieldStar.png');
+        this.load.image('planets', './assets/planets.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create(){
+
+        this.speed = game.settings.spaceshipSpeed;
+        this.totalTime = game.settings.gameTotal;
+
+        let musicConfig = {  
+            mute: false,
+            volume: 1,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+            
+        }
+        let music = this.sound.add('Moonbase', musicConfig);
+        music.play(musicConfig);
+
         //this.add.text(20, 20, "Rocket Patrol Play");
         //creates starfield/places tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfieldBlack = this.add.tileSprite(0, 0, 640, 480, 'black').setOrigin(0, 0);
+        this.starfieldBlue = this.add.tileSprite(0, 0, 640, 480, 'blue').setOrigin(0, 0);
+        this.starfieldStar = this.add.tileSprite(0, 0, 640, 480, 'star').setOrigin(0, 0);
+        this.starfieldPlanets = this.add.tileSprite(0, 0, 640, 480, 'planets').setOrigin(0, 0);
         //borders!!
         this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(5, 443, 630, 32, 0xFFFFFF).setOrigin(0, 0);
@@ -22,7 +47,7 @@ class PlayCoop extends Phaser.Scene{
         this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
 
         //green UI block
-        this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
+        this.add.rectangle(37, 42, 566, 64, 0x191970).setOrigin(0, 0);
 
         //adds player 1 rocket
         this.p1Rocket = new Rocket(this, game.config.width/2 + 2, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
@@ -59,10 +84,10 @@ class PlayCoop extends Phaser.Scene{
 
         //score display
         let scoreConfig = {
-            fontFamily: 'Georgia',
+            fontFamily: 'Candara',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#6495ED',
+            color: '#FFFFFF',
             align: 'right',
             padding: {
                 top: 5,
@@ -70,6 +95,9 @@ class PlayCoop extends Phaser.Scene{
             },
             fixedWidth: 100
         }
+
+        this.timeLeft = 0;
+        this.clockDisplay = this.add.text(game.config.width/2, 54, this.timeLeft + "  ", scoreConfig);
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
         this.scoreRight = this.add.text(500, 54, game.highScore, scoreConfig);
         
@@ -96,8 +124,22 @@ class PlayCoop extends Phaser.Scene{
             this.scene.start("menuScene");
         }
 
-        this.starfield.tilePositionX -= 4;
+        //this.starfield.tilePositionX -= 4;
+        this.starfieldBlue.tilePositionX -= 2;
+        this.starfieldStar.tilePositionX -= 4;
+        this.starfieldPlanets.tilePositionX -= 3;
+
         if(!this.gameOver){
+            this.timeLeft = Math.trunc((game.settings.gameTimer - this.clock.getElapsed())/1000)
+            this.clockDisplay.text = this.timeLeft;
+            if(Math.trunc(this.clock.getElapsed()/1000) > 28){
+                game.settings = {
+                    spaceshipSpeed: this.speed + 1,
+                    gameTimer: this.timeLeft*1000,
+                    gameTotal: this.totalTime
+                    
+                  }
+            }
             this.p1Rocket.update();
             this.p2Rocket.update();
             this.ship01.update();
@@ -109,32 +151,32 @@ class PlayCoop extends Phaser.Scene{
         if(this.checkCollision(this.p1Rocket, this.ship03)){
             console.log('kaboom ship 03');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03, p1Rocket);
+            this.shipExplode(this.ship03, this.p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship03)){
             console.log('kablooey ship 03');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship03, p2Rocket);
+            this.shipExplode(this.ship03, this.p2Rocket);
         }
         if(this.checkCollision(this.p1Rocket, this.ship02)){
             console.log('kaboom ship 02');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02, p1Rocket);
+            this.shipExplode(this.ship02, this.p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship02)){
             console.log('kablooey ship 02');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship02, p2Rocket);
+            this.shipExplode(this.ship02, this.p2Rocket);
         }
         if(this.checkCollision(this.p1Rocket, this.ship01)){
             console.log('kaboom ship 01');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01, p1Rocket);
+            this.shipExplode(this.ship01, this.p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship01)){
             console.log('kablooey ship 01');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship01, p2Rocket);
+            this.shipExplode(this.ship01, this.p2Rocket);
         }
     }
 

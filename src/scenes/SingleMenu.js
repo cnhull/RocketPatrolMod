@@ -8,15 +8,17 @@ class SingleMenu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('spaceship', './assets/spaceship.png');
     }
 
     create() {
         //displays the menu!
         let menuConfig = {
-            fontFamily: 'Georgia',
+            fontFamily: 'Candara',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#191970',
+            color: '#7B68EE',
             align: 'right',
             padding: {
                 top: 5,
@@ -25,6 +27,10 @@ class SingleMenu extends Phaser.Scene {
             fixedWidth: 0
         }
 
+        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+
+        this.ship02 = new Spaceship(this, game.config.width + 96, 350, 'spaceship', 0, 20).setOrigin(0, 0);
+
         //show menu text
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
@@ -32,11 +38,11 @@ class SingleMenu extends Phaser.Scene {
 
         this.add.text(centerX, centerY- textSpacer - textSpacer, '  Single Player  ', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY - textSpacer, '  Use <==> to move & (UP) to Fire  ', menuConfig).setOrigin(0.5);
-        menuConfig.backgroundColor = '#00FF00';
+        menuConfig.backgroundColor = '#87CEFA';
         menuConfig.color = '#000';
         this.add.text(centerX, centerY , '  Press <= for Easy  ', menuConfig).setOrigin(0.5);
         this.add.text(centerX, centerY + textSpacer , '  Press => for Hard  ', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer + textSpacer +textSpacer, 'Press (DOWN) to go back', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer + textSpacer +textSpacer, ' Press (DOWN) to go back ', menuConfig).setOrigin(0.5);
 
         //defining keys
         
@@ -51,11 +57,16 @@ class SingleMenu extends Phaser.Scene {
     }
 
     update(){
+
+        this.starfield.tilePositionX -= 4;
+        this.ship02.update();
+
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             // easy breezy
             game.settings = {
                 spaceshipSpeed: 3,
-                gameTimer: 60000    
+                gameTimer: 60000,    
+                gameTotal: 60000
             }
             this.sound.play('sfx_select');
             this.scene.start("playScene"); 
@@ -64,7 +75,8 @@ class SingleMenu extends Phaser.Scene {
             //hard!!
             game.settings = {
                 spaceshipSpeed: 4,
-                gameTimer: 45000    
+                gameTimer: 45000,    
+                gameTotal: 45000
               }
               this.sound.play('sfx_select');
               this.scene.start("playScene");
@@ -73,7 +85,8 @@ class SingleMenu extends Phaser.Scene {
             //ULTRA hard!! 
             game.settings = {
                 spaceshipSpeed: 5,
-                gameTimer: 40000
+                gameTimer: 40000,
+                gameTotal: 40000,
             }
             this.sound.play('sfx_select');
             this.scene.start("playScene");

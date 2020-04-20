@@ -1,6 +1,6 @@
-class PlayVersus extends Phaser.Scene{
+class PlayCoop extends Phaser.Scene{
     constructor(){
-        super("playVersus");
+        super("playCoop");
     }
 
     preload(){
@@ -55,9 +55,7 @@ class PlayVersus extends Phaser.Scene{
         });
 
         //SCOOOOORE
-        this.winner = "It's a tie!";
         this.p1Score = 0;
-        this.p2Score = 0;
 
         //score display
         let scoreConfig = {
@@ -72,10 +70,8 @@ class PlayVersus extends Phaser.Scene{
             },
             fixedWidth: 100
         }
-        //this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
-        this.p1Display = this.add.text(69, 54, this.p1Score, scoreConfig);
-        this.p2Display = this.add.text(180, 54, this.p2Score, scoreConfig);
-        //this.scoreRight = this.add.text(500, 54, game.highScore, scoreConfig);
+        this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(500, 54, game.highScore, scoreConfig);
         
         //game over flag
         this.gameOver = false;
@@ -84,10 +80,9 @@ class PlayVersus extends Phaser.Scene{
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2 - 64, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 , 'P1 Score: ' + this.p1Score, scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + (64*1), 'P2 Score: ' + this.p2Rocket.score, scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + (64*2), this.winner , scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + (64*3), '(Space) to Restart or <= for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 , 'Your Score: ' + this.p1Score, scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + (64*1), 'High Score: ' + game.highScore, scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + (64*2), '(Space) to Restart or <= for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -114,32 +109,32 @@ class PlayVersus extends Phaser.Scene{
         if(this.checkCollision(this.p1Rocket, this.ship03)){
             console.log('kaboom ship 03');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship03, "p1");
+            this.shipExplode(this.ship03, p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship03)){
             console.log('kablooey ship 03');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship03, "p2");
+            this.shipExplode(this.ship03, p2Rocket);
         }
         if(this.checkCollision(this.p1Rocket, this.ship02)){
             console.log('kaboom ship 02');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship02, "p1");
+            this.shipExplode(this.ship02, p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship02)){
             console.log('kablooey ship 02');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship02, "p2");
+            this.shipExplode(this.ship02, p2Rocket);
         }
         if(this.checkCollision(this.p1Rocket, this.ship01)){
             console.log('kaboom ship 01');
             this.p1Rocket.reset();
-            this.shipExplode(this.ship01, "p1");
+            this.shipExplode(this.ship01, p1Rocket);
         }
         if(this.checkCollision(this.p2Rocket, this.ship01)){
             console.log('kablooey ship 01');
             this.p2Rocket.reset();
-            this.shipExplode(this.ship01, "p2");
+            this.shipExplode(this.ship01, p2Rocket);
         }
     }
 
@@ -157,9 +152,6 @@ class PlayVersus extends Phaser.Scene{
     }
 
     shipExplode(ship, rocket){
-        console.log( rocket + " hits!");
-        console.log("p1 score: " + this.p1Score);
-        console.log("p2 score: " + this.p2Score);
         ship.alpha = 0; //temporarily hide ship
         //create an explosion sprite at ship's position
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
@@ -175,28 +167,12 @@ class PlayVersus extends Phaser.Scene{
             boom.destroy();
         });
         //increment score
-        //rocket += ship.points;
-
-        if(rocket == "p1"){
-            this.p1Score += ship.points;
-            this.p1Display.text = this.p1Score;
-            console.log("adding to p1!!!");
-        }
-
-        if(rocket == "p2"){
-            this.p2Score += ship.points;
-            this.p2Display.text = this.p2Score;
-            console.log("adding to p2!!!");
-        }
+        this.p1Score += ship.points;
+        this.scoreLeft.text = this.p1Score;
         this.sound.play('sfx_explosion');
-        if(this.p1Score > this.p2Score){
-            this.winner = "Player 1 Wins!";
-        }
-        else if(this.p2Score > this.p1Score){
-            this.winner = "Player 2 Wins!";
-        }
-        else if(this.p1Score == this.p2Score){
-            this.winner = "It's a tie!";
+        if(this.p1Score > game.highScore){
+            game.highScore = this.p1Score;
+            this.scoreRight.text = game.highScore;
         }
     }
 }

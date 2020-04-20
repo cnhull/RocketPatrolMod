@@ -55,10 +55,12 @@ class Play extends Phaser.Scene{
 
         //SCOOOOORE
         this.p1Score = 0;
+        this.p1Rocket.Score = 0;
+        this.p2Rocket.Score = 0;
 
         //score display
         let scoreConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Georgia',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
@@ -70,6 +72,7 @@ class Play extends Phaser.Scene{
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(500, 54, game.highScore, scoreConfig);
         
         //game over flag
         this.gameOver = false;
@@ -77,15 +80,17 @@ class Play extends Phaser.Scene{
         //60 second clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or <= for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 - 64, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 , 'Your Score: ' + this.p1Score, scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + (64*1), 'High Score: ' + game.highScore, scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + (64*2), '(Space) to Restart or <= for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
 
     update(){
         //check key input for restart
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)){
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keySPACE)){
             this.scene.restart(this.p1Score);
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
@@ -150,5 +155,9 @@ class Play extends Phaser.Scene{
         this.p1Score += ship.points;
         this.scoreLeft.text = this.p1Score;
         this.sound.play('sfx_explosion');
+        if(this.p1Score > game.highScore){
+            game.highScore = this.p1Score;
+            this.scoreRight.text = game.highScore;
+        }
     }
 }

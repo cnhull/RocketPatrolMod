@@ -13,7 +13,7 @@ class MultiMenu extends Phaser.Scene {
     create() {
         //displays the menu!
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Georgia',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
@@ -30,12 +30,15 @@ class MultiMenu extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
-        this.add.text(centerX, centerY- textSpacer, 'Multi Player', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'P1: Use (<=) and (=>) to move & (UP) to Fire', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, CenterY, 'P2: Use (A) and (D) to move & (W) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY- textSpacer - textSpacer, 'Multiplayer', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY - textSpacer, 'P1: (<=)&(=>) to move & (UP) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY , 'P2: (A)&(D) to move & (W) to Fire', menuConfig).setOrigin(0.5);
+
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(centerX, centerY + textSpacer + textSpacer, 'Press <= for Cooperative Mode or => for Competitive Mode', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer , 'Press <= for Cooperative Mode', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer + textSpacer , 'Press => for Competitive Mode', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer + textSpacer +textSpacer, 'Press (DOWN) to go back', menuConfig).setOrigin(0.5);
 
         //defining keys
         
@@ -51,22 +54,18 @@ class MultiMenu extends Phaser.Scene {
 
     update(){
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
-            //easy breezy
-            game.settings = {
-                spaceshipSpeed: 3,
-                gameTimer: 60000
-            }
+            //go to single player menu
             this.sound.play('sfx_select');
-            this.scene.start("playScene");
+            this.scene.start("playCoop");
         }
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
-            //hard!!!!
-            game.settings = {
-                spaceshipSpeed: 4,
-                gameTimer: 45000
-            }
+            //go to multiplayer menu
             this.sound.play('sfx_select');
-            this.scene.start("playScene");
+            this.scene.start("playVersus");
+        }
+        if(Phaser.Input.Keyboard.JustDown(keyDOWN)){
+            this.sound.play('sfx_select');
+            this.scene.start("menuScene");
         }
     }
 

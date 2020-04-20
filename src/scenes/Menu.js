@@ -13,7 +13,7 @@ class Menu extends Phaser.Scene {
     create() {
         //displays the menu!
         let menuConfig = {
-            fontFamily: 'Courier',
+            fontFamily: 'Georgia',
             fontSize: '28px',
             backgroundColor: '#F3B141',
             color: '#843605',
@@ -30,12 +30,12 @@ class Menu extends Phaser.Scene {
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
-        this.add.text(centerX, centerY- textSpacer, 'ROCKET PATROL MOD AAAAA', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'Use <--> to move & (F) to Fire', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY- textSpacer - textSpacer, '  ROCKET PATROL MOD AAAAA  ', menuConfig).setOrigin(0.5);
+        //this.add.text(centerX, centerY, 'Use <--> to move & (F) to Fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         menuConfig.color = '#000';
-        this.add.text(centerX, centerY + textSpacer, 'Press <= for Single Player', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer + textSpacer, 'Press => for Multi Player', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY - textSpacer, '  Press <= for Single Player  ', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY , '  Press => for Multi Player  ', menuConfig).setOrigin(0.5);
         //defining keys
         
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -52,17 +52,17 @@ class Menu extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLEFT)){
             //go to single player menu
             this.sound.play('sfx_select');
-            this.scene.start("playScene");
+            this.scene.start("singleMenu");
         }
         if(Phaser.Input.Keyboard.JustDown(keyRIGHT)){
             //go to multiplayer menu
             this.sound.play('sfx_select');
-            this.scene.start("playScene");
+            this.scene.start("multiMenu");
         }
-        if(Phaser.Input.Keyboard.JustDown(keyUP)){
-            this.sound.play('sfx_select');
-            this.scene.start("testScene");
-        }
+        // if(Phaser.Input.Keyboard.JustDown(keyUP)){
+        //     this.sound.play('sfx_select');
+        //     this.scene.start("test");
+        // }
     }
 
 }

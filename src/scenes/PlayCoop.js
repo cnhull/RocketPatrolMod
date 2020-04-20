@@ -95,6 +95,7 @@ class PlayCoop extends Phaser.Scene{
             },
             fixedWidth: 100
         }
+        this.frame = this.add.tileSprite(0, 0, 640, 480, 'frame').setOrigin(0, 0);
 
         this.timeLeft = 0;
         this.clockDisplay = this.add.text(game.config.width/2, 54, this.timeLeft + "  ", scoreConfig);

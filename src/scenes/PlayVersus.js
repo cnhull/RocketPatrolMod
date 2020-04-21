@@ -12,6 +12,7 @@ class PlayVersus extends Phaser.Scene{
         this.load.image('blue', './assets/starfieldBlue.png');
         this.load.image('star', './assets/starfieldStar.png');
         this.load.image('planets', './assets/planets.png');
+        this.load.image('frame', './assets/frame.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
